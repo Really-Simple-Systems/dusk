@@ -316,7 +316,7 @@ class ChromeDriverCommand extends Command
         /** @var array<string, mixed> $chromedrivers */
         $chromedrivers = $versions['milestones'][$milestone]['downloads']['chromedriver'];
 
-        if ($chromedrivers) {
+        if (! $chromedrivers) {
             throw new Exception('Could not get the ChromeDriver version.');
         }
 
