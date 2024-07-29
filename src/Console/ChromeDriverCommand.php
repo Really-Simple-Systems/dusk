@@ -2,8 +2,10 @@
 
 namespace Laravel\Dusk\Console;
 
+use Exception;
 use Illuminate\Console\Command;
 use Laravel\Dusk\OperatingSystem;
+use PHPUnit\Event\Runtime\OperatingSystem;
 use Symfony\Component\Process\Process;
 use ZipArchive;
 
@@ -199,22 +201,13 @@ class ChromeDriverCommand extends Command
      */
     protected function latestVersion()
     {
-        $streamOptions = [];
+        $versions = json_decode($this->getUrl('https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json'), true);
 
-        if ($this->option('ssl-no-verify')) {
-            $streamOptions = [
-                'ssl' => [
-                    'verify_peer' => false,
-                    'verify_peer_name' => false,
-                ],
-            ];
+        if ($versions['channels']['Stable']['version']) {
+            return $versions['channels']['Stable']['version'];
+        } else {
+            throw new Exception('Could not determine the ChromeDriver version.');
         }
-
-        if ($this->option('proxy')) {
-            $streamOptions['http'] = ['proxy' => $this->option('proxy'), 'request_fulluri' => true];
-        }
-
-        return trim(file_get_contents($this->latestVersionUrl, false, stream_context_create($streamOptions)));
     }
 
     /**
