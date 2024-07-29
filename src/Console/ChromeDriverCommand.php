@@ -152,7 +152,7 @@ class ChromeDriverCommand extends Command
         $versions = json_decode($this->getUrl('https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json'), true);
 
         if ($versions['channels']['Stable']['version']) {
-            return $versions['channels']['Stable']['version']
+            return $versions['channels']['Stable']['version'];
         }
 
         throw new Exception('Could not get the latest ChromeDriver version.');
@@ -320,7 +320,7 @@ class ChromeDriverCommand extends Command
             throw new Exception('Could not get the ChromeDriver version.');
         }
 
-        $driver = collect($chromedrivers)->firstWhere('platform', $slug)['url']
+        $driver = collect($chromedrivers)->firstWhere('platform', $slug)['url'];
 
         if (! $driver) {
             throw new Exception('Could not get the ChromeDriver version.');
